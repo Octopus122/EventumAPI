@@ -35,7 +35,7 @@ class SecurityConfiguration(
             .csrf{it.disable()}
             .authorizeHttpRequests {
                 it.requestMatchers("/tags/**").hasRole("ADMIN")
-                it.requestMatchers("/giftstate/**").hasRole("ADMIN")
+                it.requestMatchers("/giftstates/**").hasRole("ADMIN")
                 it.anyRequest().permitAll()
             }
             .httpBasic {  }
