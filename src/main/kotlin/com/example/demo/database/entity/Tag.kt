@@ -1,11 +1,8 @@
 package com.example.demo.database.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import java.time.LocalDateTime
-
+import jakarta.persistence.*
+@Entity
+@Table(name = "tag")
 class Tag (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +12,6 @@ class Tag (
     @Column(name = "name", nullable = false)
     var name: String,
 
-    @Column(name = "color_code", nullable = false)
-    var colorCode: String
+    //@Column(name = "colorcode", nullable = false)
+    //var colorCode: String
 )

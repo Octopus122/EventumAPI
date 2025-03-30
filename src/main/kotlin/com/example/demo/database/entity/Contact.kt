@@ -14,11 +14,11 @@ data class Contact( // alike to users, but created by one user and don't have ac
     var name: String,
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "host_user_id", nullable = false)
     val hostUser: User,
 
-    @OneToMany
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "friend_user_id")
     val friendUser: User?,
 
     @OneToOne(cascade = arrayOf(CascadeType.ALL))

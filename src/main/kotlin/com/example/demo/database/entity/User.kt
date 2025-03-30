@@ -10,15 +10,16 @@ class User(
     @Column(name = "id")
     var id: Long = 0,
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     var name: String,
 
     @Column(name = "email", nullable = false, unique = true)
     var email: String,
-    @Column(name = "picture", nullable = true)
+
+    @Column(name = "picture")
     var picture: String,
 
-    @Column(name = "password", nullable = true)
+    @Column(name = "password", nullable = false)
     var password: String,
 
 //    @Column(name = "confirm_email", nullable = false) // заглушка на случай добавления
