@@ -1,0 +1,13 @@
+package com.example.demo.service
+
+import com.example.demo.model.request.TagRequest
+import com.example.demo.model.response.TagResponse
+
+interface TagService {
+    fun create(request: TagRequest): TagResponse
+    fun getById(id: Long): TagResponse
+    fun getAll(): List<TagResponse>
+    fun update(id: Long, request: TagRequest): TagResponse
+    fun delete(id: Long): String
+
+}
