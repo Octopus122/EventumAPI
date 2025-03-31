@@ -32,7 +32,7 @@ class User(
     var events: MutableSet<Event> = mutableSetOf(), // events, created by user
 
     @OneToOne(cascade = arrayOf(CascadeType.ALL))
-    @JoinColumn(name = "wishlist_id", nullable = false) // c пользователем сохдается wishList
-    var wishlist: WishList
+    @JoinColumn(name = "wishlist_id") // c пользователем сохдается wishList
+    var wishlist: WishList? = null
 ) {
 }

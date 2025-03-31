@@ -1,7 +1,8 @@
 package com.example.demo.model.request
 
-data class UserRequest (
+data class UserRegisterRequest (
     val name: String,
     val email: String,
-    val picture: String
+    val picture: String,
+    val password: String
 )

@@ -18,5 +18,5 @@ class Present (
 
     @ManyToOne(cascade = arrayOf(CascadeType.PERSIST))
     @JoinColumn(name = "wishlist_id")
-    var wishlist: WishList
+    var wishlist: WishList?
 )

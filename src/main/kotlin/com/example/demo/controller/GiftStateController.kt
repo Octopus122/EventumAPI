@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.*
 class GiftStateController(
     private val service: GiftStateService
 ) {
-    @GetMapping("/{id}")
-    fun getById(@PathVariable id: Long): GiftStateResponse = service.getById(id)
-
     @GetMapping("/")
     fun getAll():List<GiftStateResponse> = service.getAll()
 

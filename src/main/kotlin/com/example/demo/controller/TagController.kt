@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController
 class TagController(
     private val service: TagService
 ) {
-    @GetMapping("/{id}")
-    fun getById(@PathVariable id: Long): TagResponse = service.getById(id)
 
     @GetMapping("/")
     fun getAll():List<TagResponse> = service.getAll()

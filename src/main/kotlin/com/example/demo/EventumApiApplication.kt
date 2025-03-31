@@ -10,12 +10,7 @@ import org.springframework.core.env.get
 @SpringBootApplication
 class EventumApiApplication
 
-@Autowired
-private val env: Environment? = null
-
 fun main(args: Array<String>) {
-	val dbUrl: String? = env?.get("DB_URL")
-	println(dbUrl)
 	runApplication<EventumApiApplication>(*args)
 }
 

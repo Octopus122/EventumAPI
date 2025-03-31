@@ -10,9 +10,12 @@ class WishList (
     @Column(name = "id")
     var id: Long = 0,
 
+    @Column(name = "is_available")
+    var isAvalable: Boolean = false,
+
     @OneToOne(mappedBy = "wishlist")
-    var user: User,
+    var user: User?,
 
     @OneToMany(mappedBy = "wishlist")
-    var presents: MutableSet<Present>
+    var presents: MutableSet<Present> = mutableSetOf()
 )

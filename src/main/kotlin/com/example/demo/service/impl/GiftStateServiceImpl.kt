@@ -1,5 +1,6 @@
 package com.example.demo.service.impl
 
+import com.example.demo.database.entity.GiftState
 import com.example.demo.database.repository.GiftStateDao
 import com.example.demo.exception.type.NotFoundException
 import com.example.demo.model.request.GiftStateRequest
@@ -17,8 +18,7 @@ class GiftStateServiceImpl(
         return mapper.entityToResponse(dao.save(mapper.createEntity(request)))
     }
 
-    override fun getById(id: Long): GiftStateResponse = mapper
-        .entityToResponse(dao.findById(id).orElseThrow{throw NotFoundException("tag") })
+    override fun getById(id: Long): GiftState = dao.findById(id).orElseThrow{throw NotFoundException("tag") }
 
     override fun getAll(): List<GiftStateResponse> = dao.findAll()
         .map { mapper.entityToResponse(it) }

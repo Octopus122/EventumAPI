@@ -1,5 +1,6 @@
 package com.example.demo.service.impl
 
+import com.example.demo.database.entity.Tag
 import com.example.demo.database.repository.TagDao
 import com.example.demo.exception.type.NotFoundException
 import com.example.demo.model.request.TagRequest
@@ -17,8 +18,7 @@ class TagServiceImpl(
         return mapper.entityToResponse(dao.save(mapper.createEntity(request)))
     }
 
-    override fun getById(id: Long): TagResponse = mapper
-        .entityToResponse(dao.findById(id).orElseThrow{throw NotFoundException("tag")})
+    override fun getById(id: Long): Tag = dao.findById(id).orElseThrow{throw NotFoundException("tag")}
 
     override fun getAll(): List<TagResponse> = dao.findAll()
         .map { mapper.entityToResponse(it) }

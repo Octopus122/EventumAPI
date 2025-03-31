@@ -1,20 +1,25 @@
 package com.example.demo.util.mapper
 
 import com.example.demo.database.entity.User
+import com.example.demo.database.entity.WishList
+import com.example.demo.model.request.UserRegisterRequest
 import com.example.demo.model.request.UserRequest
+import com.example.demo.model.response.UserContactResponse
 import com.example.demo.model.response.UserResponse
 import com.example.demo.util.cipher.HashPasswordService
 import org.springframework.stereotype.Component
 
 @Component
 class UserMapper(
-    private val passwordService: HashPasswordService
+    private val passwordService: HashPasswordService,
+    private val wishListMapper: WishListMapper
 ) {
-    fun createRequestToEntity(request: UserRequest): User = User(
+    fun createRequestToEntity(request: UserRegisterRequest, wishList: WishList): User = User(
         name = request.name,
         email = request.email,
         picture = request.picture,
-        password = passwordService.hashPassword(request.password)
+        password = request.password,
+        wishlist = wishList
     )
 
     fun updateRequestToEntity(entity: User, request: UserRequest) :User = entity.apply {
@@ -23,12 +28,27 @@ class UserMapper(
         this.picture = request.picture
     }
 
-    fun entityToResponse(entity: User): UserResponse = UserResponse(
-        entity.id,
-        entity.name,
-        entity.picture,
-        entity.password,
-//        entity.contacts,
-//        entity.events
-    )
+    fun entityToResponse(entity: User): UserResponse {
+        val wishList = entity.wishlist
+        if (wishList != null)
+        return UserResponse(
+            entity.id,
+            entity.name,
+            entity.picture,
+            listOf(),
+            listOf(),
+            wishListMapper.entityToResponse(wishList)
+        )
+        else throw Exception("Не определен вишлист")
+    }
+    fun entityToContactResponse(entity: User): UserContactResponse {
+        val wishList = entity.wishlist
+        if (wishList != null)
+         return UserContactResponse(
+            entity.name,
+            entity.picture,
+            wishListMapper.entityToResponse(wishList)
+        )
+        else throw Exception("Не определен вишлист")
+    }
 }
