@@ -19,13 +19,12 @@ data class Contact( // alike to users, but created by one user and don't have ac
 
     @ManyToOne
     @JoinColumn(name = "friend_user_id")
-    val friendUser: User?,
+    var friendUser: User?,
 
-    @OneToOne(cascade = arrayOf(CascadeType.ALL))
-    @JoinColumn(name = "giftlist_id", nullable = false)
-    var giftList: GiftList,
+    @OneToMany(mappedBy = "contact", cascade = [CascadeType.ALL])
+    val gifts: MutableSet<Gift> = mutableSetOf(),
 
     @ManyToMany(mappedBy = "contacts")
-    var events: MutableSet<Event>
+    val events: MutableSet<Event> = mutableSetOf()
 
 )

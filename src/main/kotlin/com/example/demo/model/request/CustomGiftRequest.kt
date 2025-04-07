@@ -1,6 +1,6 @@
 package com.example.demo.model.request
 
-data class PresentUpdateRequest(
+data class CustomGiftRequest (
     val title: String,
     val description: String
 )

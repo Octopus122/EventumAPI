@@ -1,7 +1,44 @@
 package com.example.demo.util.mapper
 
+import com.example.demo.database.entity.Event
+import com.example.demo.database.entity.Tag
+import com.example.demo.database.entity.User
+import com.example.demo.model.request.EventRequest
+import com.example.demo.model.request.EventUpdateRequest
+import com.example.demo.model.response.EventResponse
 import org.springframework.stereotype.Component
 
 @Component
-class EventMapper {
+class EventMapper(
+    private val notificationMapper: NotificationMapper,
+    private val tagMapper: TagMapper,
+    private val contactMapper: ContactMapper
+) {
+    fun entityToResponse(entity: Event) =
+            EventResponse(
+            entity.id,
+            entity.name,
+            entity.description,
+            entity.time,
+            entity.picture,
+            tagMapper.entityToResponse(entity.tag),
+            entity.hostUser.id,
+            entity.contacts.map { contactMapper.entityToResponseNoGifts(it)},
+            entity.notifications.map { notificationMapper.entityToResponse(it) }
+            )
+    fun createRequestToEntity(request: EventRequest, tag: Tag?, user: User) = Event(
+        name = request.name,
+        description = request.description,
+        time = request.time,
+        picture = request.picture,
+        tag = tag,
+        hostUser = user
+    )
+    fun updateRequestToEntity(entity: Event, request: EventUpdateRequest, tag: Tag?) = entity.apply {
+        name = request.name
+        description = request.description
+        time = request.time
+        picture = request.picture
+        this.tag = tag
+    }
 }

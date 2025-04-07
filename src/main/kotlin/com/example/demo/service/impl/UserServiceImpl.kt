@@ -3,12 +3,10 @@ package com.example.demo.service.impl
 import com.example.demo.database.entity.User
 import com.example.demo.database.repository.UserDao
 import com.example.demo.exception.type.NotFoundException
-import com.example.demo.model.request.UserRegisterRequest
-import com.example.demo.model.request.UserRequest
+import com.example.demo.model.request.*
 import com.example.demo.model.response.*
-import com.example.demo.service.UserService
-import com.example.demo.util.mapper.UserMapper
-import com.example.demo.util.mapper.WishListMapper
+import com.example.demo.service.*
+import com.example.demo.util.mapper.*
 import org.springframework.stereotype.Service
 
 
@@ -17,20 +15,25 @@ class UserServiceImpl(
     private val dao: UserDao,
     private val mapper: UserMapper,
     private val wishlistMapper: WishListMapper,
-    private val wishListService: WishListServiceImpl
+    private val wishListService: WishListServiceImpl,
+    private val tagService: TagService,
+    private val tagMapper: TagMapper,
+    private val presentService: PresentService,
+    private val contactService: ContactService,
+    private val contactMapper: ContactMapper,
+    private val eventMapper: EventMapper,
+    private val eventService: EventService
 
     ) : UserService {
     override fun getEntityById(id: Long): User = dao.findById(id).orElseThrow { throw NotFoundException("user") }
 
-    override fun getByEmail(email: String): UserResponse {
-        val entity = dao.findByEmail(email)
-        if (entity == null) throw NotFoundException("user")
-        return mapper.entityToResponse(entity)
+    override fun getByEmail(email: String): User {
+        val entity = dao.findByEmail(email) ?: throw NotFoundException("user")
+        return entity
     }
-    override fun getByName(name: String): UserContactResponse {
-        val entity = dao.findByName(name)
-        if (entity == null) throw NotFoundException("user")
-        return mapper.entityToContactResponse(entity)
+    override fun getByName(name: String): User {
+        val entity = dao.findByName(name) ?: throw NotFoundException("user")
+        return entity
     }
 
     override fun getAll(): List<UserResponse> = dao.findAll().map {
@@ -60,11 +63,35 @@ class UserServiceImpl(
         )
 
     override fun getContacts(id: Long): List<ContactResponse> {
-        TODO("Not yet implemented")
+        val user = dao.findById(id).orElseThrow { throw NotFoundException("user") }
+        return user.contacts.map { contactMapper.entityToResponse(it, contactService.getGifts(it.id)) }
+    }
+
+    override fun createContact(id: Long, contactRequest: ContactRequest): ContactResponse {
+        val user = dao.findById(id).orElseThrow { throw NotFoundException("user") }
+        var friend: User? = null
+        if (contactRequest.friendLogin != null){
+            try{
+                friend = dao.findByName(contactRequest.friendLogin)
+            }
+            catch (_: Exception){}
+        }
+        return contactService.create(contactRequest, user, friend)
+    }
+
+    override fun updateContact(contactId: Long, contactRequest: ContactRequest): ContactResponse{
+        val friend = if (contactRequest.friendLogin != null ) dao.findByName(contactRequest.friendLogin) else null
+        return contactService.update(contactId, contactRequest, friend)
     }
 
     override fun getEvents(id: Long): List<EventResponse> {
-        TODO("Not yet implemented")
+        val entity = dao.findById(id).orElseThrow { throw NotFoundException("user") }
+        return entity.events.map { eventMapper.entityToResponse(it) }
+    }
+
+    override fun createEvent(id: Long, eventRequest: EventRequest): EventResponse {
+        val entity = dao.findById(id).orElseThrow { throw NotFoundException("user") }
+        return eventService.create(eventRequest, entity)
     }
 
     override fun getWishList(id: Long): WishListResponse {
@@ -73,9 +100,31 @@ class UserServiceImpl(
         else return wishlistMapper.entityToResponse(wishlist)
     }
 
+    override fun createPresent(id: Long, presentRequest: PresentRequest): PresentResponse{
+        val wishlist = dao.findById(id).orElseThrow { throw NotFoundException("user") }.wishlist
+        if (wishlist == null) throw Exception("Неопределён вишлист")
+        else return presentService.create(presentRequest, wishlist)
+    }
+
+    override fun updateWishList(id: Long, wishListRequest: WishListRequest): WishListResponse {
+        val wishlist = dao.findById(id).orElseThrow { throw NotFoundException("user") }.wishlist
+        if (wishlist == null) throw Exception("Неопределён вишлист")
+        else return wishListService.update(wishlist.id, wishListRequest)
+    }
+
     override fun delete(id: Long): String {
         dao.delete(dao.findById(id).orElseThrow { throw NotFoundException("user") })
         return "Пользователь успешно удален"
+    }
+
+    override fun createTag(id: Long, tagRequest: TagRequest): TagResponse? {
+        val user = dao.findById(id).orElseThrow{throw NotFoundException("user")}
+        return tagService.create(tagRequest, user)
+    }
+
+    override fun getTags(id: Long): List<TagResponse?> {
+        val user = dao.findById(id).orElseThrow{throw NotFoundException("user")}
+        return user.tags.map { tagMapper.entityToResponse(it) }
     }
 
 

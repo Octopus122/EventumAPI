@@ -33,4 +33,6 @@ class GiftStateServiceImpl(
         dao.delete(entity)
         return "GiftState успешно удален"
     }
+
+    override fun getByName(name: String) = dao.findByName(name)
 }

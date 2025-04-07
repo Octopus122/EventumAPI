@@ -12,7 +12,9 @@ import org.springframework.stereotype.Component
 @Component
 class UserMapper(
     private val passwordService: HashPasswordService,
-    private val wishListMapper: WishListMapper
+    private val wishListMapper: WishListMapper,
+    private val tagMapper: TagMapper,
+    private val contactMapper: ContactMapper,
 ) {
     fun createRequestToEntity(request: UserRegisterRequest, wishList: WishList): User = User(
         name = request.name,
@@ -34,10 +36,12 @@ class UserMapper(
         return UserResponse(
             entity.id,
             entity.name,
+            entity.email,
             entity.picture,
+            entity.contacts.map { contactMapper.entityToResponseNoGifts(it) },
             listOf(),
-            listOf(),
-            wishListMapper.entityToResponse(wishList)
+            wishListMapper.entityToResponse(wishList),
+            entity.tags.map { tagMapper.entityToResponse(it) }
         )
         else throw Exception("Не определен вишлист")
     }

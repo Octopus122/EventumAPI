@@ -10,4 +10,6 @@ interface GiftStateService {
     fun getAll(): List<GiftStateResponse>
     fun update(id: Long, request: GiftStateRequest): GiftStateResponse
     fun delete(id: Long): String
+
+    fun getByName(name: String): GiftState?
 }

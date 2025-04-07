@@ -39,5 +39,5 @@ data class Event(
     var contacts: MutableSet<Contact> = mutableSetOf(), // contacts, which target in event
 
     @OneToMany(mappedBy = "event")
-    var notifications: MutableSet<Notification>
+    var notifications: MutableSet<Notification> = mutableSetOf()
 )

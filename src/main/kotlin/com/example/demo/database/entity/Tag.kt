@@ -12,6 +12,10 @@ class Tag (
     @Column(name = "name", nullable = false)
     var name: String,
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    var hostUser: User
+
     //@Column(name = "colorcode", nullable = false)
     //var colorCode: String
 )

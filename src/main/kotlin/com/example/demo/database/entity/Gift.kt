@@ -18,6 +18,6 @@ class Gift (
     var state: GiftState,
 
     @ManyToOne
-    @JoinColumn(name = "giftlist_id", nullable = false)
-    var giftList: GiftList
+    @JoinColumn(name = "contact_id", nullable = false)
+    var contact: Contact
 )

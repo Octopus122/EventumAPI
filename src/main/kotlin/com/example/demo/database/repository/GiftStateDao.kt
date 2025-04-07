@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface GiftStateDao:CrudRepository<GiftState, Long> {
+    fun findByName(name: String): GiftState?
 }

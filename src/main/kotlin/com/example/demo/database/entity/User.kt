@@ -33,6 +33,9 @@ class User(
 
     @OneToOne(cascade = arrayOf(CascadeType.ALL))
     @JoinColumn(name = "wishlist_id") // c пользователем сохдается wishList
-    var wishlist: WishList? = null
+    var wishlist: WishList? = null,
+
+    @OneToMany(cascade = arrayOf(CascadeType.ALL), mappedBy = "hostUser")
+    var tags: MutableSet<Tag> = mutableSetOf()
 ) {
 }

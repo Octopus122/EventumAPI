@@ -1,7 +1,7 @@
 package com.example.demo.controller
 
-import com.example.demo.model.request.TagRequest
-import com.example.demo.service.TagService
+import com.example.demo.model.request.CustomGiftRequest
+import com.example.demo.service.GiftService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("tags")
-class TagController(
-    private val service: TagService
+@RequestMapping("gifts")
+class GiftController(
+    private val service: GiftService
 ) {
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long, @RequestBody request: TagRequest) = service.update(id, request)
-
+    fun updateCustom(@PathVariable id: Long, @RequestBody request: CustomGiftRequest) = service
+        .updateCustom(id, request)
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long) = service.delete(id)
 }

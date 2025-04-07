@@ -1,10 +1,10 @@
 package com.example.demo.service.impl
 
+import com.example.demo.database.entity.Present
 import com.example.demo.database.entity.WishList
 import com.example.demo.database.repository.PresentDao
 import com.example.demo.exception.type.NotFoundException
-import com.example.demo.model.request.PresentCreateRequest
-import com.example.demo.model.request.PresentUpdateRequest
+import com.example.demo.model.request.PresentRequest
 import com.example.demo.model.response.PresentResponse
 import com.example.demo.service.PresentService
 import com.example.demo.util.mapper.PresentMapper
@@ -15,15 +15,19 @@ class PresentServiceImpl(
     private val dao: PresentDao,
     private val mapper: PresentMapper
 ): PresentService {
-    override fun getById(id: Long): PresentResponse = mapper
+    override fun getResponseById(id: Long): PresentResponse = mapper
         .entityToResonse(dao.findById(id).orElseThrow{throw NotFoundException("present")})
+
+    override fun getEntityById(id: Long): Present = dao.findById(id).orElseThrow{throw NotFoundException("present")}
 
     override fun getAll(): List<PresentResponse> = dao.findAll().map { mapper.entityToResonse(it) }
 
-    override fun create(request: PresentCreateRequest, wishlist: WishList): PresentResponse = mapper
+    override fun create(request: PresentRequest, wishlist: WishList): PresentResponse = mapper
         .entityToResonse(dao.save(mapper.createRequestToEntity(request, wishlist)))
 
-    override fun update(id: Long, request: PresentUpdateRequest): PresentResponse = mapper
+    override fun create(request: PresentRequest) = dao.save(mapper.createRequestToEntity(request, null))
+
+    override fun update(id: Long, request: PresentRequest): PresentResponse = mapper
         .entityToResonse(
             dao.save(
                 mapper.updateRequestToEntity(

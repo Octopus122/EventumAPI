@@ -1,9 +1,8 @@
 package com.example.demo.model.response
 
-data class ContactResponse (
+data class ContactNoGiftsResponse (
     val id: Long,
     val name: String,
     val hostUserId: Long,
-    val friendUser: UserContactResponse?,
-    val gifs: List<GiftResponse>
+    val friendUser: UserContactResponse?
 )
