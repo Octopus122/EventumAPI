@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component
 class GiftMapper {
     fun entityToResponse(entity: Gift, count: Long?) = GiftResponse(
         entity.id,
+        entity.present.id,
         entity.present.title,
         entity.present.description,
         entity.contact.id,

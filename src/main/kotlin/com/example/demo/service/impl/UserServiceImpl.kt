@@ -3,9 +3,11 @@ package com.example.demo.service.impl
 import com.example.demo.database.entity.User
 import com.example.demo.database.repository.UserDao
 import com.example.demo.exception.type.NotFoundException
+import com.example.demo.exception.type.WrongLoginDataException
 import com.example.demo.model.request.*
 import com.example.demo.model.response.*
 import com.example.demo.service.*
+import com.example.demo.util.cipher.HashPasswordService
 import com.example.demo.util.mapper.*
 import org.springframework.stereotype.Service
 
@@ -22,7 +24,8 @@ class UserServiceImpl(
     private val contactService: ContactService,
     private val contactMapper: ContactMapper,
     private val eventMapper: EventMapper,
-    private val eventService: EventService
+    private val eventService: EventService,
+    private val passwordService: HashPasswordService
 
     ) : UserService {
     override fun getEntityById(id: Long): User = dao.findById(id).orElseThrow { throw NotFoundException("user") }
@@ -125,6 +128,13 @@ class UserServiceImpl(
     override fun getTags(id: Long): List<TagResponse?> {
         val user = dao.findById(id).orElseThrow{throw NotFoundException("user")}
         return user.tags.map { tagMapper.entityToResponse(it) }
+    }
+
+    override fun login(request: UserLoginRequest): UserResponse {
+        val user = dao.findByEmail(request.email) ?: throw WrongLoginDataException("Неправильный логин")
+        if (!passwordService.verifyPassword(request.password, user.password))
+            throw WrongLoginDataException("Неправильный пароль")
+        return mapper.entityToResponse(user)
     }
 
 

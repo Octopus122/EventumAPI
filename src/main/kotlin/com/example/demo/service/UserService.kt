@@ -27,5 +27,7 @@ interface UserService {
 
     fun createTag(id: Long, tagRequest: TagRequest): TagResponse?
     fun getTags(id: Long): List<TagResponse?>
+
+    fun login(request: UserLoginRequest): UserResponse
 //    fun getByIds(ids: List<Long>): List<User>
 }
