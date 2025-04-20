@@ -18,8 +18,10 @@ class PresentMapper {
         description = request.description,
         wishlist = wishList
     )
-    fun updateRequestToEntity(entity: Present, request: PresentRequest):Present = entity.apply {
-        title = request.title
-        description = request.description
-    }
+    fun updateRequestToEntity(entity: Present, request: PresentRequest):Present = Present(
+        id = entity.id,
+        title = request.title,
+        description = request.description,
+        wishlist = entity.wishlist
+    )
 }

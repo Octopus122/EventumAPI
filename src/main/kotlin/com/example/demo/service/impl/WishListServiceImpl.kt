@@ -30,10 +30,10 @@ class WishListServiceImpl(
 
     override fun update(id: Long, request: WishListRequest): WishListResponse = mapper
         .entityToResponse(
-            mapper.updateRequestToEntity(
+           dao.save( mapper.updateRequestToEntity(
                 dao.findById(id).orElseThrow{throw NotFoundException("wishlist")},
                 request
-            )
+            ))
         )
 
     override fun delete(id: Long): String {

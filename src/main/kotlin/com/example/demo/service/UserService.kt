@@ -6,6 +6,7 @@ import com.example.demo.model.response.*
 
 interface UserService {
     fun getEntityById(id: Long): User
+    fun getById(id: Long): UserResponse
     fun getByEmail(email: String): User
     fun getByName(name: String): User
     fun getAll(): List<UserResponse>

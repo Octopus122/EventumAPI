@@ -16,12 +16,11 @@ class UserMapper(
     private val tagMapper: TagMapper,
     private val contactMapper: ContactMapper,
 ) {
-    fun createRequestToEntity(request: UserRegisterRequest, wishList: WishList): User = User(
+    fun createRequestToEntity(request: UserRegisterRequest): User = User(
         name = request.name,
         email = request.email,
         picture = request.picture,
-        password = request.password,
-        wishlist = wishList
+        password = passwordService.hashPassword(request.password)
     )
 
     fun updateRequestToEntity(entity: User, request: UserRequest) :User = entity.apply {
@@ -51,7 +50,7 @@ class UserMapper(
          return UserContactResponse(
             entity.name,
             entity.picture,
-            wishListMapper.entityToResponse(wishList)
+            wishList.id
         )
         else throw Exception("Не определен вишлист")
     }

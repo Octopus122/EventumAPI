@@ -17,7 +17,7 @@ class UserServiceImpl(
     private val dao: UserDao,
     private val mapper: UserMapper,
     private val wishlistMapper: WishListMapper,
-    private val wishListService: WishListServiceImpl,
+    private val wishListService: WishListService,
     private val tagService: TagService,
     private val tagMapper: TagMapper,
     private val presentService: PresentService,
@@ -29,6 +29,9 @@ class UserServiceImpl(
 
     ) : UserService {
     override fun getEntityById(id: Long): User = dao.findById(id).orElseThrow { throw NotFoundException("user") }
+
+    override fun getById(id: Long): UserResponse = mapper.entityToResponse(getEntityById(id))
+
 
     override fun getByEmail(email: String): User {
         val entity = dao.findByEmail(email) ?: throw NotFoundException("user")
@@ -44,12 +47,7 @@ class UserServiceImpl(
     }
 
     override fun create(request: UserRegisterRequest): UserResponse {
-        val entity = dao.save(User(
-            name = request.name,
-            picture = request.picture,
-            email = request.email,
-            password = request.password
-        ))
+        val entity = dao.save(mapper.createRequestToEntity(request))
 
         entity.wishlist = wishListService.create(entity)
         return mapper.entityToResponse(dao.save(entity))
@@ -136,6 +134,4 @@ class UserServiceImpl(
             throw WrongLoginDataException("Неправильный пароль")
         return mapper.entityToResponse(user)
     }
-
-
 }

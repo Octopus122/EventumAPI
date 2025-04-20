@@ -17,6 +17,6 @@ class WishListMapper(
         }
     )
     fun updateRequestToEntity(entity: WishList, request: WishListRequest): WishList = entity.apply {
-        isAvalable = request.isAvalable
+        isAvalable = request.isAvailable
     }
 }

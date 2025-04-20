@@ -1,6 +1,7 @@
 package com.example.demo.database.entity
 
 import jakarta.persistence.*
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
@@ -17,7 +18,7 @@ data class Event(
     var description: String?,
 
     @Column(name = "time", nullable = false)
-    var time: LocalDateTime,
+    var time: LocalDate,
 
     @Column(name = "picture", nullable = true)
     var picture: String,

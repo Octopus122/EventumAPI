@@ -10,8 +10,9 @@ import com.example.demo.model.response.NotificationResponse
 
 interface EventService {
     fun create(request: EventRequest, hostUser: User): EventResponse
-    fun update(id: Long, request: EventUpdateRequest): EventResponse
-    fun getById(id: Long): Event
+    fun update(id: Long, request: EventRequest): EventResponse
+    fun getEntity(id: Long): Event
+    fun getById(id: Long): EventResponse
     fun getAll(): List<EventResponse>
     fun delete(id: Long): String
 

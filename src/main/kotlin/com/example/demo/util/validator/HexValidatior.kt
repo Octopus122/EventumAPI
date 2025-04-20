@@ -16,6 +16,5 @@ class HexValidatior {
             if (!allowedChars.contains(c)) throw IncorrectHexCode(String.format("Inappropriate letter: %c", c))
         }
         return code;
-
     }
 }

@@ -5,6 +5,5 @@ import java.time.LocalDateTime
 data class NotificationRequest(
     val name: String,
     val description: String,
-    val time: LocalDateTime,
-    val eventId: Long
+    val time: LocalDateTime
 )

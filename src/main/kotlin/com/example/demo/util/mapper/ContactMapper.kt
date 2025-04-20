@@ -17,7 +17,7 @@ class ContactMapper(
         entity.name,
         entity.hostUser.id,
         entityToContactResponse(entity.friendUser),
-        gifts
+        gifts.map { it.id }
     )
     fun entityToResponseNoGifts(entity: Contact): ContactNoGiftsResponse = ContactNoGiftsResponse(
         entity.id,
@@ -33,7 +33,7 @@ class ContactMapper(
             return UserContactResponse(
                 entity.name,
                 entity.picture,
-                if (wishList.isAvalable) wishListMapper.entityToResponse(wishList) else null
+                if (wishList.isAvalable) wishList.id else null
             )
         else throw Exception("Не определен вишлист")
     }

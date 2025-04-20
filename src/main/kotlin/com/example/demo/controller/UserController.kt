@@ -1,8 +1,12 @@
 package com.example.demo.controller
 
 import com.example.demo.model.request.*
+import com.example.demo.model.response.EventResponse
+import com.example.demo.model.response.PresentResponse
 import com.example.demo.model.response.UserResponse
+import com.example.demo.model.response.WishListResponse
 import com.example.demo.service.UserService
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,6 +26,12 @@ class UserController(
     @GetMapping("/")
     fun getAll(): List<UserResponse> = service.getAll()
 
+    @DeleteMapping("/{id}/")
+    fun deleteUser(@PathVariable id: Long) = service.delete(id)
+
+    @GetMapping("/{id}/")
+    fun getUser(@PathVariable id: Long): UserResponse = service.getById(id)
+
     @PostMapping("/{id}/tags")
     fun createTag(@PathVariable id: Long, @RequestBody tagRequest: TagRequest) = service.createTag(id, tagRequest)
 
@@ -29,14 +39,14 @@ class UserController(
     fun getTags(@PathVariable id: Long) = service.getTags(id)
 
     @PostMapping("{id}/presents")
-    fun createPresent(@PathVariable id: Long, @RequestBody presentRequest: PresentRequest) = service
+    fun createPresent(@PathVariable id: Long, @RequestBody presentRequest: PresentRequest): PresentResponse = service
         .createPresent(id, presentRequest)
 
     @GetMapping("{id}/wishlist")
-    fun getPresents(@PathVariable id: Long) = service.getWishList(id)
+    fun getPresents(@PathVariable id: Long): WishListResponse = service.getWishList(id)
 
     @PutMapping("{id}/wishlist")
-    fun updateWishlist(@PathVariable id: Long, @RequestBody wishListRequest: WishListRequest) = service
+    fun updateWishlist(@PathVariable id: Long, @RequestBody wishListRequest: WishListRequest): WishListResponse = service
         .updateWishList(id, wishListRequest)
 
     @GetMapping("{id}/contacts")
@@ -47,7 +57,7 @@ class UserController(
         .createContact(id, contactRequest)
 
     @PostMapping("{id}/events")
-    fun createEvent(@PathVariable id: Long, @RequestBody eventRequest: EventRequest) = service
+    fun createEvent(@PathVariable id: Long, @RequestBody eventRequest: EventRequest): EventResponse = service
         .createEvent(id, eventRequest)
 
     @GetMapping("{id}/events")

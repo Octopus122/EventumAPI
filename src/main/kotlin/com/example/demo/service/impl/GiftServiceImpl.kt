@@ -36,7 +36,6 @@ class GiftServiceImpl(
                 contact
             ))
             return mapper.entityToResponse(entity, dao.getGiftNumber(entity.id))
-
         }
         else throw Exception("Ошибка поиска состояния подарка")
     }

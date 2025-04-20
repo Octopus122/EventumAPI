@@ -5,5 +5,5 @@ data class ContactResponse (
     val name: String,
     val hostUserId: Long,
     val friendUser: UserContactResponse?,
-    val gifs: List<GiftResponse>
+    val giftsIds: List<Long>
 )

@@ -21,10 +21,8 @@ class EventMapper(
             entity.description,
             entity.time,
             entity.picture,
-            tagMapper.entityToResponse(entity.tag),
-            entity.hostUser.id,
-            entity.contacts.map { contactMapper.entityToResponseNoGifts(it)},
-            entity.notifications.map { notificationMapper.entityToResponse(it) }
+            entity.tag?.id ?: 0,
+            entity.hostUser.id
             )
     fun createRequestToEntity(request: EventRequest, tag: Tag?, user: User) = Event(
         name = request.name,
@@ -34,7 +32,7 @@ class EventMapper(
         tag = tag,
         hostUser = user
     )
-    fun updateRequestToEntity(entity: Event, request: EventUpdateRequest, tag: Tag?) = entity.apply {
+    fun updateRequestToEntity(entity: Event, request: EventRequest, tag: Tag?) = entity.apply {
         name = request.name
         description = request.description
         time = request.time

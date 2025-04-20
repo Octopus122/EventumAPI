@@ -3,6 +3,7 @@ package com.example.demo.controller
 import com.example.demo.model.request.ContactRequest
 import com.example.demo.model.request.CustomGiftRequest
 import com.example.demo.model.request.LinkedGiftRequest
+import com.example.demo.model.response.ContactResponse
 import com.example.demo.service.ContactService
 import com.example.demo.service.UserService
 import org.springframework.web.bind.annotation.*
@@ -14,20 +15,20 @@ class ContactController(
     private val userService: UserService
 ) {
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long, @RequestBody request: ContactRequest) = userService
+    fun update(@PathVariable id: Long, @RequestBody request: ContactRequest): ContactResponse = userService
         .updateContact(id, request)
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long) = service.delete(id)
+    fun delete(@PathVariable id: Long): String = service.delete(id)
 
-    @PostMapping("/gifts/{id}/custom")
+    @PostMapping("/{id}/gifts/custom")
     fun createCustomGift(@PathVariable id: Long, @RequestBody request: CustomGiftRequest) = service
         .createCustomGift(id, request)
 
-    @PostMapping("/gifts/{id}/linked")
+    @PostMapping("/{id}/gifts/linked")
     fun createLinkedGift(@PathVariable id: Long, @RequestBody request: LinkedGiftRequest) = service
         .createLinkedGift(id, request)
 
-    @GetMapping("/gifts/{id}")
+    @GetMapping("/{id}/gifts")
     fun getGifts(@PathVariable id: Long) = service.getGifts(id)
 }

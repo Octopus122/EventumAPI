@@ -1,6 +1,5 @@
 package com.example.demo.service.impl
 
-import com.example.demo.database.entity.Event
 import com.example.demo.database.entity.User
 import com.example.demo.database.repository.EventDao
 import com.example.demo.exception.type.NotFoundException
@@ -32,10 +31,12 @@ class EventServiceImpl(
             tagService.getById(request.tagId),
             hostUser
         )
-        for (contactId in request.contactIds){
-            try{
-                entity.contacts.add(contactService.getById(contactId))
-            }catch (_: Exception){}
+        request.contactIds?.let {
+            for (contactId in it){
+                try{
+                    entity.contacts.add(contactService.getById(contactId))
+                }catch (_: Exception){}
+            }
         }
         entity = dao.save(entity)
         for (notification in request.notifications){
@@ -44,7 +45,7 @@ class EventServiceImpl(
         return mapper.entityToResponse(entity)
     }
 
-    override fun update(id: Long, request: EventUpdateRequest) = mapper.entityToResponse(
+    override fun update(id: Long, request: EventRequest) = mapper.entityToResponse(
         dao.save(
             mapper.updateRequestToEntity(
                 dao.findById(id).orElseThrow { throw NotFoundException("event") },
@@ -53,7 +54,10 @@ class EventServiceImpl(
                 ))
     )
 
-    override fun getById(id: Long) = dao.findById(id).orElseThrow { throw NotFoundException("event") }
+    override fun getEntity(id: Long) = dao.findById(id).orElseThrow { throw NotFoundException("event") }
+
+    override fun getById(id: Long): EventResponse = mapper.entityToResponse(getEntity(id))
+
 
     override fun getAll(): List<EventResponse> = dao.findAll().map { mapper.entityToResponse(it) }
 

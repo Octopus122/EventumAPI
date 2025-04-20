@@ -1,15 +1,16 @@
 package com.example.demo.model.request
 
-import java.time.LocalDateTime
+import com.fasterxml.jackson.annotation.JsonFormat
+import java.time.LocalDate
 
 
 data class EventRequest(
     val name: String,
     val description: String,
-    val time: LocalDateTime,
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    val time: LocalDate,
     val picture: String,
     val tagId: Long,
-    val userId: Long,
-    val contactIds: List<Long>,
-    val notifications: List<NotificationRequest>
+    val contactIds: List<Long>?,
+    val notifications: List<NotificationRequest> = listOf()
 )
