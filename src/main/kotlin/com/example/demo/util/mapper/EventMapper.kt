@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class EventMapper(
-    private val notificationMapper: NotificationMapper,
     private val tagMapper: TagMapper,
     private val contactMapper: ContactMapper
 ) {

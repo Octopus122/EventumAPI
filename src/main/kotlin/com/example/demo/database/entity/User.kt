@@ -28,6 +28,9 @@ class User(
     @OneToMany(cascade = arrayOf(CascadeType.ALL), mappedBy = "hostUser")
     var contacts: MutableSet<Contact> = mutableSetOf(),
 
+    @ManyToMany(cascade = arrayOf(CascadeType.ALL))
+    var users: MutableSet<User> = mutableSetOf(),
+
     @OneToMany(cascade = arrayOf(CascadeType.ALL), mappedBy = "hostUser")
     var events: MutableSet<Event> = mutableSetOf(), // events, created by user
 

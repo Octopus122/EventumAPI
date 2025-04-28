@@ -1,10 +1,7 @@
 package com.example.demo.controller
 
 import com.example.demo.model.request.*
-import com.example.demo.model.response.EventResponse
-import com.example.demo.model.response.PresentResponse
-import com.example.demo.model.response.UserResponse
-import com.example.demo.model.response.WishListResponse
+import com.example.demo.model.response.*
 import com.example.demo.service.UserService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -25,6 +22,9 @@ class UserController(
 
     @GetMapping("/")
     fun getAll(): List<UserResponse> = service.getAll()
+
+    @GetMapping("/find/{name}")
+    fun getAllUsersByName(@PathVariable name: String): List<UserResponse> = service.getAll()
 
     @DeleteMapping("/{id}/")
     fun deleteUser(@PathVariable id: Long) = service.delete(id)
@@ -62,4 +62,15 @@ class UserController(
 
     @GetMapping("{id}/events")
     fun getEvents(@PathVariable id: Long) = service.getEvents(id)
+
+    @PostMapping("{id}/friends/{friendId}")
+    fun createFriend(@PathVariable id: Long, @PathVariable friendId: Long): UserResponse = service
+        .createFriend(id, friendId)
+
+    @GetMapping("{id}/friends/{friendId}")
+    fun checkFriendship(@PathVariable id: Long, @PathVariable friendId: Long): FriendshipResponse = service
+        .checkFriendShip(id, friendId)
+
+    @GetMapping("{id}/friends")
+    fun getFriendsUsers(@PathVariable id: Long): List<UserResponse> = service.getFriends(id)
 }

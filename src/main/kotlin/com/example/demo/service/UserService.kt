@@ -10,6 +10,7 @@ interface UserService {
     fun getByEmail(email: String): User
     fun getByName(name: String): User
     fun getAll(): List<UserResponse>
+    fun getAllByName(name: String): List<UserResponse>
     fun create(request: UserRegisterRequest): UserResponse
     fun update(id: Long, user: UserRequest): UserResponse
 
@@ -20,6 +21,10 @@ interface UserService {
     fun getEvents(id: Long): List<EventResponse>
     fun createEvent(id: Long, eventRequest: EventRequest): EventResponse
 
+    fun createFriend(id: Long, friendId: Long): UserResponse
+    fun getFriends(id: Long): List<UserResponse>
+    fun checkFriendShip(id: Long, friendId: Long): FriendshipResponse
+
     fun getWishList(id: Long): WishListResponse
     fun createPresent(id: Long, presentRequest: PresentRequest): PresentResponse
     fun updateWishList(id: Long, wishListRequest: WishListRequest): WishListResponse
@@ -29,6 +34,6 @@ interface UserService {
     fun createTag(id: Long, tagRequest: TagRequest): TagResponse?
     fun getTags(id: Long): List<TagResponse?>
 
-    fun login(request: UserLoginRequest): UserResponse
+    fun login(request: UserLoginRequest): Result<UserResponse>
 //    fun getByIds(ids: List<Long>): List<User>
 }

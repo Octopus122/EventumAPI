@@ -12,7 +12,7 @@ class LoginController(
     private val service: UserService
 ) {
     @PostMapping("/login")
-    fun login(@RequestBody request: UserLoginRequest): UserResponse = service.login(request)
+    fun login(@RequestBody request: UserLoginRequest): Result<UserResponse> = service.login(request)
 
     @PostMapping("/register")
     fun requester(@RequestBody request: UserRegisterRequest) = service.create(request)

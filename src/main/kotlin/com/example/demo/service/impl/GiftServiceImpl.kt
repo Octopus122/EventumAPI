@@ -71,8 +71,8 @@ class GiftServiceImpl(
         val entity = dao.findById(id).orElseThrow{throw NotFoundException("gift")}
         if (entity.state.name != "custom") throw Exception("Нельзя изменить данный подарок")
         presentService.update(entity.present.id, PresentRequest(
-            entity.present.title,
-            entity.present.description
+            request.title,
+            request.description
         )
         )
         return mapper.entityToResponse(

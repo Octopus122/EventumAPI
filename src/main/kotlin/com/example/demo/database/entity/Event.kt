@@ -38,7 +38,4 @@ data class Event(
         inverseJoinColumns = [JoinColumn(name = "contact_id")]
     )
     var contacts: MutableSet<Contact> = mutableSetOf(), // contacts, which target in event
-
-    @OneToMany(mappedBy = "event")
-    var notifications: MutableSet<Notification> = mutableSetOf()
 )

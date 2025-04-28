@@ -46,6 +46,16 @@ class UserServiceImpl(
         mapper.entityToResponse(it)
     }
 
+    override fun getAllByName(name: String): List<UserResponse> {
+        val responses = mutableListOf<UserResponse>()
+        dao.findAll().forEach {
+            if (it.name.contains(name))
+                responses.add(mapper.entityToResponse(it))
+        }
+        return responses
+    }
+
+
     override fun create(request: UserRegisterRequest): UserResponse {
         val entity = dao.save(mapper.createRequestToEntity(request))
 
@@ -95,6 +105,25 @@ class UserServiceImpl(
         return eventService.create(eventRequest, entity)
     }
 
+    override fun createFriend(id: Long, friendId: Long): UserResponse {
+        val user = dao.findById(id).orElseThrow { throw NotFoundException("user") }
+        val friend = dao.findById(friendId).orElseThrow { throw NotFoundException("user") }
+        user.users.add(friend)
+        return mapper.entityToResponse(dao.save(user))
+    }
+
+    override fun getFriends(id: Long): List<UserResponse> {
+        val entity = dao.findById(id).orElseThrow { throw NotFoundException("user") }
+        return entity.users.map { mapper.entityToResponse(it) }
+    }
+
+    override fun checkFriendShip(id: Long, friendId: Long): FriendshipResponse {
+        val user = dao.findById(id).orElseThrow { throw NotFoundException("user") }
+        val friend = dao.findById(friendId).orElseThrow { throw NotFoundException("user") }
+        return FriendshipResponse(
+            isFriendship = user.users.contains(friend) && friend.users.contains(user))
+    }
+
     override fun getWishList(id: Long): WishListResponse {
         val wishlist = dao.findById(id).orElseThrow { throw NotFoundException("user") }.wishlist
         if (wishlist == null) throw Exception("Неопределён вишлист")
@@ -128,10 +157,10 @@ class UserServiceImpl(
         return user.tags.map { tagMapper.entityToResponse(it) }
     }
 
-    override fun login(request: UserLoginRequest): UserResponse {
+    override fun login(request: UserLoginRequest): Result<UserResponse> {
         val user = dao.findByEmail(request.email) ?: throw WrongLoginDataException("Неправильный логин")
         if (!passwordService.verifyPassword(request.password, user.password))
-            throw WrongLoginDataException("Неправильный пароль")
-        return mapper.entityToResponse(user)
+            return Result.failure(WrongLoginDataException("Неправильный пароль"))
+        return Result.success(mapper.entityToResponse(user))
     }
 }
