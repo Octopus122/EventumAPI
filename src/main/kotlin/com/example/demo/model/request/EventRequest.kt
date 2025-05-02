@@ -7,7 +7,7 @@ import java.time.LocalDate
 data class EventRequest(
     val name: String,
     val description: String,
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     val time: LocalDate,
     val picture: String,
     val tagId: Long,
