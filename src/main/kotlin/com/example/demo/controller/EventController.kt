@@ -3,6 +3,7 @@ package com.example.demo.controller
 import com.example.demo.model.request.EventRequest
 import com.example.demo.model.request.EventUpdateRequest
 import com.example.demo.model.request.NotificationRequest
+import com.example.demo.model.response.ContactResponse
 import com.example.demo.model.response.EventResponse
 import com.example.demo.service.EventService
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -35,9 +36,16 @@ class EventController(
     // @GetMapping("/{id}/notifications") without remote notification system for now
     // fun getNotifications(@PathVariable id: Long) = service.getNotifications(id)
 
+    @GetMapping("/{id}/contacts")
+    fun getContacts(@PathVariable id: Long): List<ContactResponse> =
+        service.getContacts(id)
+
+
     @PutMapping("/{id}/contacts/{contactId}")
-    fun addContact(@PathVariable id: Long, @PathVariable contactId: Long) = service.addContact(id, contactId)
+    fun addContact( @PathVariable("id") id: Long,
+                    @PathVariable("contactId") contactId: Long) = service.addContact(id, contactId)
 
     @DeleteMapping("/{id}/contacts/{contactId}")
-    fun removeContact(@PathVariable id: Long, @PathVariable contactId: Long) = service.removeContact(id, contactId)
+    fun removeContact(@PathVariable("id") id: Long,
+                      @PathVariable("contactId") contactId: Long) = service.removeContact(id, contactId)
 }

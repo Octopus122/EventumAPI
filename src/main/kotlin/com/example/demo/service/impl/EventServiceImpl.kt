@@ -6,10 +6,12 @@ import com.example.demo.exception.type.NotFoundException
 import com.example.demo.model.request.EventRequest
 import com.example.demo.model.request.EventUpdateRequest
 import com.example.demo.model.request.NotificationRequest
+import com.example.demo.model.response.ContactResponse
 import com.example.demo.model.response.EventResponse
 import com.example.demo.service.ContactService
 import com.example.demo.service.EventService
 import com.example.demo.service.TagService
+import com.example.demo.util.mapper.ContactMapper
 import com.example.demo.util.mapper.EventMapper
 import org.springframework.stereotype.Service
 
@@ -18,7 +20,8 @@ class EventServiceImpl(
     private val dao: EventDao,
     private val mapper: EventMapper,
     private val tagService: TagService,
-    private val contactService: ContactService
+    private val contactService: ContactService,
+    private val contactMapper: ContactMapper,
 ): EventService {
     override fun create(request: EventRequest, hostUser: User): EventResponse {
         var entity = mapper.createRequestToEntity(
@@ -63,6 +66,11 @@ class EventServiceImpl(
         val contact = contactService.getById(contactId)
         entity.contacts.add(contact)
         return  mapper.entityToResponse(dao.save(entity))
+    }
+
+    override fun getContacts(id: Long): List<ContactResponse> {
+        val entity = dao.findById(id).orElseThrow { throw NotFoundException("event") }
+        return entity.contacts.map { contactMapper.entityToResponse(it, contactService.getGifts(it.id)) }
     }
 
     override fun removeContact(id: Long, contactId: Long): EventResponse {
