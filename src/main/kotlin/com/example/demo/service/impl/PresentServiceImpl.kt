@@ -16,26 +16,28 @@ class PresentServiceImpl(
     private val mapper: PresentMapper
 ): PresentService {
     override fun getResponseById(id: Long): PresentResponse = mapper
-        .entityToResonse(dao.findById(id).orElseThrow{throw NotFoundException("present")})
+        .entityToResponse(dao.findById(id).orElseThrow{throw NotFoundException("present")})
 
     override fun getEntityById(id: Long): Present = dao.findById(id).orElseThrow{throw NotFoundException("present")}
 
-    override fun getAll(): List<PresentResponse> = dao.findAll().map { mapper.entityToResonse(it) }
+    override fun getAll(): List<PresentResponse> = dao.findAll().map { mapper.entityToResponse(it) }
 
     override fun create(request: PresentRequest, wishlist: WishList): PresentResponse = mapper
-        .entityToResonse(dao.save(mapper.createRequestToEntity(request, wishlist)))
+        .entityToResponse(dao.save(mapper.createRequestToEntity(request, wishlist)))
 
     override fun create(request: PresentRequest) = dao.save(mapper.createRequestToEntity(request, null))
 
-    override fun update(id: Long, request: PresentRequest): PresentResponse = mapper
-        .entityToResonse(
-            dao.save(
-                mapper.updateRequestToEntity(
-                    dao.findById(id).orElseThrow{ throw NotFoundException("present")},
-                    request
+    override fun update(id: Long, request: PresentRequest): PresentResponse {
+        return mapper
+            .entityToResponse(
+                dao.save(
+                    mapper.updateRequestToEntity(
+                        dao.findById(id).orElseThrow { throw NotFoundException("present") },
+                        request
+                    )
                 )
             )
-        )
+    }
 
     override fun delete(id: Long): String {
         dao.delete(dao.findById(id).orElseThrow{throw NotFoundException("present")})

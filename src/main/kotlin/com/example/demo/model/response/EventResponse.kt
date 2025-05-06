@@ -6,8 +6,8 @@ import java.time.LocalDate
 data class EventResponse (
     val id: Long,
     val name: String,
-    val description: String?,
-    val time: LocalDate,
+    val description: String,
+    val time: String, // yyyy-MM-dd format
     val picture: String,
     val tag: Long,
     val userId: Long,

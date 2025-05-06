@@ -161,6 +161,7 @@ class UserServiceImpl(
         val user = dao.findByEmail(request.email) ?: throw WrongLoginDataException("Неправильный логин")
         if (!passwordService.verifyPassword(request.password, user.password))
             return Result.failure(WrongLoginDataException("Неправильный пароль"))
+        println(user.email)
         return Result.success(mapper.entityToResponse(user))
     }
 }

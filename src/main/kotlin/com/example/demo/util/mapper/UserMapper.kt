@@ -36,11 +36,7 @@ class UserMapper(
             entity.id,
             entity.name,
             entity.email,
-            entity.picture,
-            entity.contacts.map { contactMapper.entityToResponseNoGifts(it) },
-            listOf(),
-            wishListMapper.entityToResponse(wishList),
-            entity.tags.map { tagMapper.entityToResponse(it) }
+            entity.picture
         )
         else throw Exception("Не определен вишлист")
     }

@@ -18,7 +18,7 @@ data class Event(
     var description: String?,
 
     @Column(name = "time", nullable = false)
-    var time: LocalDate,
+    var time: LocalDate, // yyyy-MM-dd format
 
     @Column(name = "picture", nullable = true)
     var picture: String,

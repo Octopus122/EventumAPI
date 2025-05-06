@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class PresentMapper {
-    fun entityToResonse(entity: Present):PresentResponse = PresentResponse(
+    fun entityToResponse(entity: Present):PresentResponse = PresentResponse(
         entity.id,
         entity.title,
         entity.description

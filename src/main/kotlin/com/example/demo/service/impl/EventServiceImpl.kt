@@ -1,5 +1,6 @@
 package com.example.demo.service.impl
 
+import com.example.demo.database.entity.Contact
 import com.example.demo.database.entity.User
 import com.example.demo.database.repository.EventDao
 import com.example.demo.exception.type.NotFoundException
@@ -13,7 +14,9 @@ import com.example.demo.service.EventService
 import com.example.demo.service.TagService
 import com.example.demo.util.mapper.ContactMapper
 import com.example.demo.util.mapper.EventMapper
+import org.apache.juli.logging.Log
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class EventServiceImpl(
@@ -61,10 +64,12 @@ class EventServiceImpl(
         return "Событие успешно удалено"
     }
 
+    @Transactional
     override fun addContact(id: Long, contactId: Long): EventResponse {
         val entity = dao.findById(id).orElseThrow { throw NotFoundException("event") }
         val contact = contactService.getById(contactId)
         entity.contacts.add(contact)
+        contact.events.add(entity)
         return  mapper.entityToResponse(dao.save(entity))
     }
 
@@ -76,7 +81,9 @@ class EventServiceImpl(
     override fun removeContact(id: Long, contactId: Long): EventResponse {
         val entity = dao.findById(id).orElseThrow { throw NotFoundException("event") }
         val contact = contactService.getById(contactId)
-        entity.contacts.remove(contact)
+        val contacts = entity.contacts
+        contacts.remove(contact)
+        entity.contacts = contacts
         return  mapper.entityToResponse(dao.save(entity))
     }
 }

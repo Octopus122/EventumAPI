@@ -13,7 +13,7 @@ class WishListMapper(
         entity.id,
         entity.isAvalable,
         entity.presents.map{
-            presentMapper.entityToResonse(it)
+            presentMapper.entityToResponse(it)
         }
     )
     fun updateRequestToEntity(entity: WishList, request: WishListRequest): WishList = entity.apply {

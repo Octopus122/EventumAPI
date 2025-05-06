@@ -17,8 +17,8 @@ class EventMapper(
             EventResponse(
             entity.id,
             entity.name,
-            entity.description,
-            entity.time,
+                entity.description.toString(),
+                entity.time.toString(),
             entity.picture,
             entity.tag?.id ?: 0,
             entity.hostUser.id
