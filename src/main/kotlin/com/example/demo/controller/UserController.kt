@@ -20,6 +20,10 @@ class UserController(
     @PostMapping("/")
     fun createUser(@RequestBody request: UserRegisterRequest): UserResponse = service.create(request)
 
+    @PutMapping("/{id}/")
+    fun updateUser(@PathVariable id: Long, @RequestBody request: UserRequest): UserResponse =
+        service.update(id, request)
+
     @GetMapping("/")
     fun getAll(): List<UserResponse> = service.getAll()
 
